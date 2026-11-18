@@ -1,0 +1,268 @@
+<!doctype html><html lang="de"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Sportpark Manager</title><style>
+:root{font-family:Arial,Helvetica,sans-serif;color:#1d2939;background:#f4f6f9}*{box-sizing:border-box}body{margin:0}header{background:#12375a;color:white;padding:16px;display:flex;align-items:center;justify-content:space-between}h1{font-size:21px;margin:0}main{max-width:1150px;margin:auto;padding:16px}button,input,select{font:inherit}button{cursor:pointer;border:1px solid #c8d0dc;border-radius:8px;padding:9px 12px;background:white}button.primary{background:#175a8d;color:white;border:0}.tabs{display:flex;gap:7px;flex-wrap:wrap;margin-bottom:15px}.tabs button.active{background:#175a8d;color:white}.panel{background:white;border:1px solid #d8e0e8;border-radius:12px;padding:16px;margin-bottom:16px}h2{margin:0 0 12px;font-size:20px}input{border:1px solid #b9c6d3;border-radius:5px;padding:8px;max-width:100%}.toolbar{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-bottom:12px}.hint{font-size:13px;color:#586575}.sheetwrap{overflow-x:auto;background:#e8ecf1;padding:12px}.paper{background:white;max-width:840px;min-width:690px;margin:auto;padding:12px;border:1px solid #999}.paperhead{display:flex;justify-content:space-between;gap:12px;font-weight:bold;margin-bottom:8px}.paperhead input{width:90px}.paper table{width:100%;border-collapse:collapse;table-layout:fixed;font-size:12px;color:black}.paper th,.paper td{border:1px solid #222;padding:0;height:35px}.paper th{height:56px;text-align:center;padding:3px}.paper .day td{height:24px;font-weight:bold;padding-left:5px}.paper td button{border:0;border-radius:0;width:100%;height:100%;padding:2px;font-size:12px;text-align:center;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.paper td button:hover{background:#e8f4ff}.paper td input{width:100%;height:100%;border:0;padding:2px;font-size:12px;text-align:center}.dialogshade{position:fixed;inset:0;background:#0008;display:flex;align-items:center;justify-content:center;padding:12px;z-index:10}.dialog{background:white;border-radius:12px;width:min(550px,100%);max-height:88vh;display:flex;flex-direction:column;padding:15px;gap:10px}.choices{overflow-y:auto;min-height:140px;max-height:55dvh;flex:1 1 auto;overscroll-behavior:contain}.choices button{display:flex;gap:12px;width:100%;border-radius:0;border-width:0 0 1px;text-align:left}.choices b{min-width:88px}.item{display:flex;gap:8px;justify-content:space-between;align-items:center;border-bottom:1px solid #eee;padding:9px 0}.item.done{opacity:.55;text-decoration:line-through}.meter{display:grid;grid-template-columns:1fr 150px;gap:8px;align-items:center;padding:10px 0;border-bottom:1px solid #eee}.meter small{display:block;color:#667085}.badge{background:#f3d3b1;color:#713d00;padding:3px 7px;border-radius:20px;font-size:12px}.empty{color:#667085;padding:20px;text-align:center}@media(max-width:600px){main{padding:9px}.panel{padding:11px}.meter{grid-template-columns:1fr 110px}}
+
+.fav{background:#fff3a6!important}.splash{position:fixed;inset:0;background:#101923;z-index:30;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:10px}.splash img{max-height:78vh;max-width:90vw;object-fit:contain;border-radius:16px}.splash button{font-size:18px;padding:12px 28px}.smallaction{font-size:12px;padding:4px 7px}.favtop{background:#fff9d9;border-left:4px solid #edc74d;padding:10px;margin:10px 0}.inlineform{display:flex;gap:8px;flex-wrap:wrap;margin:8px 0}.inlineform input{max-width:180px}
+.side-switch{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:12px 0}.side-switch button{min-height:60px;font-size:17px;font-weight:bold;border:2px solid #cbd5e1;background:#f8fafc}.side-switch button.selected{background:#175a8d;color:#fff;border-color:#175a8d}.side-switch small{display:block;font-size:12px;font-weight:normal;margin-top:4px}.mobile-days{display:none}
+@media(max-width:700px){header{padding:12px}h1{font-size:18px}.tabs{flex-wrap:nowrap;overflow-x:auto;padding-bottom:5px}.tabs button{white-space:nowrap;min-height:44px}.toolbar button{min-height:44px}.sheetwrap{padding:0;background:transparent;overflow-x:visible;touch-action:pan-y}.paper{min-width:0;padding:0;border:0;background:transparent}.paperhead,.paper table{display:none}.mobile-days{display:block}.mobile-day{margin:12px 0 18px}.mobile-day h3{position:sticky;top:0;background:#eaf2f9;border-left:4px solid #175a8d;padding:10px;margin:0 0 8px;font-size:16px;z-index:1}.mobile-entry{border:1px solid #d8e0e8;border-radius:10px;margin:8px 0;padding:8px;background:white}.entry-label{font-weight:bold;color:#536273;font-size:12px;margin-bottom:7px}.mobile-fields{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:7px}.mobile-field{min-width:0;min-height:54px;text-align:left;padding:7px 9px;background:#f8fafc}.mobile-field span{display:block;font-size:11px;color:#667085;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.mobile-field strong{display:block;font-size:15px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;margin-top:4px}.mobile-field:nth-child(2),.mobile-field:nth-child(4){grid-column:span 1}.favtop button{margin-top:6px;min-height:44px}.dialog{max-height:90dvh}.choices button{min-height:48px}.side-switch{position:relative}}
+.choices button.favorite-choice{background:#fff3b8}.choices button.favorite-choice:hover{background:#ffe78b}.choices button.favorite-choice b:before{content:'★ ';color:#9a6800}.time-dialog{max-height:90dvh;overflow-y:auto}.time-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;margin:8px 0 16px}.time-choice{min-height:54px;font-size:17px;font-weight:600}.time-favorite{background:#fff3b8;border:1px solid #dfbb54}.time-custom{display:flex;gap:8px;margin:8px 0 16px}.time-custom input{min-width:0;flex:1}.time-custom button{min-height:46px}@media(max-width:420px){.time-grid{grid-template-columns:repeat(2,minmax(0,1fr))}} 
+.fav-dialog{width:min(640px,95vw);max-width:95vw;max-height:90dvh;overflow-y:auto;overflow-x:hidden}.fav-tabs{display:flex;gap:7px;flex-wrap:wrap;margin:10px 0}.fav-tabs button{min-height:44px}.fav-tabs button.active{background:#175a8d;color:#fff}.favorite-rows{display:flex;flex-direction:column;gap:7px;margin:12px 0}.favorite-row{display:flex;align-items:center;gap:10px;min-width:0;border:1px solid #e1c46a;background:#fff3b8;border-radius:9px;padding:7px 9px;min-height:60px}.favorite-row.dragging{outline:2px solid #175a8d;opacity:.85}.drag-handle{flex:0 0 44px;display:flex;align-items:center;justify-content:center;font-size:25px;cursor:grab;touch-action:none;user-select:none;align-self:stretch;color:#59616d}.fav-description{flex:1;min-width:0;display:flex;flex-direction:column;gap:3px;overflow-wrap:anywhere}.fav-description b{font-size:14px}.fav-description span{font-size:14px}.remove-fav{flex:0 0 44px;min-height:44px}.add-favorite{width:100%;min-height:50px;margin-top:8px}.fav-add-results{max-height:55dvh;overflow-y:auto;display:flex;flex-direction:column;gap:6px;margin-top:10px}.fav-add-row{display:flex;align-items:center;justify-content:space-between;gap:12px;text-align:left;min-height:58px;width:100%;background:#f8fafc}.fav-add-row>span{display:flex;flex-direction:column;gap:4px;min-width:0}.fav-add-row strong{font-size:24px}.fav-dialog input{width:100%;min-height:46px}
+.dialog textarea{width:100%;box-sizing:border-box;min-height:70px;font:inherit;padding:10px;border:1px solid #cbd5e1;border-radius:6px;resize:vertical}.dialog label{display:block;margin:10px 0 5px;font-weight:600}.dialog #vehicleSelected{width:100%;box-sizing:border-box;padding:10px;background:#f4f6f8}.dialog #vehicleChoices{max-height:210px;overflow:auto;margin-bottom:8px}.dialog #vehicleChoices button{width:100%}
+@media(max-width:700px){
+ .tabs{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:6px;overflow:visible;padding:0}
+ .tabs button{min-width:0;white-space:normal;min-height:36px;padding:7px 5px;font-size:12px;line-height:1.2}
+ .toolbar{gap:6px}.toolbar button{min-height:34px;padding:6px 8px;font-size:12px}.toolbar strong{font-size:13px}
+ .favtop{padding:8px!important}.favtop button{min-height:32px;font-size:12px;padding:5px 7px}
+ .paper .mobile-days{display:block}.mobile-sheet-note{font-size:11px;color:#64748b;margin:6px 0}
+ .mobile-page{margin:10px 0 18px;background:white;border:1px solid #cbd5e1}
+ .mobile-page-title{background:#eaf2f9;padding:7px;font-weight:bold;font-size:13px}
+ .mobile-table-scroll{overflow-x:auto;overscroll-behavior-x:contain}
+ .paper .compact-report{display:table;min-width:690px;width:100%;table-layout:fixed;border-collapse:collapse;font-size:11px}
+ .compact-report th,.compact-report td{border:1px solid #b9c4d0;padding:0;height:28px}
+ .compact-report th{height:39px;padding:2px;overflow-wrap:anywhere;background:#f4f6f9;font-size:10px}
+ .compact-report .compact-day td{background:#eaf2f9;height:25px;font-weight:bold;padding:4px 6px}
+ .compact-report td button{display:block;width:100%;height:28px;min-height:0;padding:3px 2px;border:0;border-radius:0;font-size:11px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;background:transparent;color:#1d2939}
+ .compact-report td button:active{background:#d9eaf8}
+ .paperhead{display:none}
+}
+</style></head><body><header><h1>Sportpark Manager <small style="display:inline-block;font-size:11px;font-weight:normal;vertical-align:middle;margin-left:7px;padding:3px 6px;border:1px solid rgba(255,255,255,.55);border-radius:5px">25.1 Alpha · DEMO</small></h1><button id="bell" title="Fällige Wartungen">🔔 <span id="dueCount">0</span></button></header><main><p role="note" style="background:#fff4d6;border:1px solid #d9b85a;border-radius:8px;padding:10px 12px;font-size:13px;margin:0 0 12px"><strong>DEMO – nur erfundene Testdaten.</strong> Bitte keine echten Namen, Personalnummern, Zählerstände oder internen Berichte eingeben oder importieren. Eingaben werden lokal auf diesem Gerät gespeichert.</p><nav class="tabs" id="nav"></nav><div id="view"></div></main><div id="modal"></div><div id="splash" class="splash"><div style="padding:24px;font-weight:bold">Sportpark Manager – DEMO mit Beispieldaten</div><button onclick="document.getElementById('splash').remove()">App öffnen</button></div><script>
+// Ausschließlich erfundene Beispieldaten. Keine realen Standorte, Zähler oder Mitarbeiter.
+const STAMMDATEN = {
+  auftraege: [
+    {id:'TEST-001',label:'Beispielauftrag Grünpflege'},
+    {id:'TEST-002',label:'Beispielauftrag Reinigung'},
+    {id:'TEST-003',label:'Beispielauftrag Wartung'}
+  ],
+  taetigkeiten: [
+    {id:'01',label:'Beispieltätigkeit Mähen'},
+    {id:'02',label:'Beispieltätigkeit Kontrolle'},
+    {id:'03',label:'Beispieltätigkeit Reinigung'}
+  ],
+  fahrzeuge: [
+    {id:'GER-001',label:'Beispielgerät A'},
+    {id:'GER-002',label:'Beispielgerät B'}
+  ]
+};
+const ZAEHLER = [
+  ['Beispiel-Verbrauchsstelle A','Teststandort A','Strom','TEST-Z-001'],
+  ['Beispiel-Verbrauchsstelle B','Teststandort B','Gas','TEST-Z-002']
+];
+
+</script><script>
+// Kleine, offlinefähige XLSX-Ausgabe ohne externe Bibliotheken.
+(function(){
+const enc=new TextEncoder();const esc=s=>String(s??'').replace(/[<>&"']/g,c=>({'<':'&lt;','>':'&gt;','&':'&amp;','"':'&quot;',"'":'&apos;'}[c]));
+const crcTable=Array.from({length:256},(_,n)=>{for(let k=0;k<8;k++)n=n&1?0xedb88320^(n>>>1):n>>>1;return n>>>0});
+function crc32(b){let c=0xffffffff;for(const x of b)c=crcTable[(c^x)&255]^(c>>>8);return(c^0xffffffff)>>>0}
+function zip(entries){let parts=[],central=[],offset=0;const u16=(v)=>[v&255,(v>>>8)&255],u32=v=>[v&255,(v>>>8)&255,(v>>>16)&255,(v>>>24)&255];for(const [name,content] of entries){let n=enc.encode(name),b=enc.encode(content),crc=crc32(b),local=new Uint8Array([...u32(0x04034b50),...u16(20),...u16(0),...u16(0),...u16(0),...u16(0),...u32(crc),...u32(b.length),...u32(b.length),...u16(n.length),...u16(0),...n]);parts.push(local,b);central.push(new Uint8Array([...u32(0x02014b50),...u16(20),...u16(20),...u16(0),...u16(0),...u16(0),...u16(0),...u32(crc),...u32(b.length),...u32(b.length),...u16(n.length),...u16(0),...u16(0),...u16(0),...u16(0),...u32(0),...u32(offset),...n]));offset+=local.length+b.length}const csize=central.reduce((s,b)=>s+b.length,0);return new Blob([...parts,...central,new Uint8Array([...u32(0x06054b50),...u16(0),...u16(0),...u16(entries.length),...u16(entries.length),...u32(csize),...u32(offset),...u16(0)])],{type:'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'})}
+function sheetXml(rows){let body=rows.map((row,i)=>`<row r="${i+1}">${row.map((v,j)=>{if(v===null||v===undefined||v==='')return '';let col='',k=j+1;while(k){k--;col=String.fromCharCode(65+k%26)+col;k=Math.floor(k/26)}return `<c r="${col}${i+1}" t="inlineStr"><is><t xml:space="preserve">${esc(v)}</t></is></c>`}).join('')}</row>`).join('');return `<?xml version="1.0" encoding="UTF-8" standalone="yes"?><worksheet xmlns="http://schemas.openxmlformats.org/spreadsheetml/2006/main"><sheetViews><sheetView workbookViewId="0"/></sheetViews><sheetFormatPr defaultRowHeight="18"/><sheetData>${body}</sheetData></worksheet>`}
+window.packXlsxEntries=zip;
+window.makeXlsx=function(sheets){let entries=[['[Content_Types].xml',`<?xml version="1.0" encoding="UTF-8"?><Types xmlns="http://schemas.openxmlformats.org/package/2006/content-types"><Default Extension="rels" ContentType="application/vnd.openxmlformats-package.relationships+xml"/><Default Extension="xml" ContentType="application/xml"/><Override PartName="/xl/workbook.xml" ContentType="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet.main+xml"/>${sheets.map((_,i)=>`<Override PartName="/xl/worksheets/sheet${i+1}.xml" ContentType="application/vnd.openxmlformats-officedocument.spreadsheetml.worksheet+xml"/>`).join('')}</Types>`],['_rels/.rels',`<?xml version="1.0" encoding="UTF-8"?><Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships"><Relationship Id="rId1" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/officeDocument" Target="xl/workbook.xml"/></Relationships>`],['xl/workbook.xml',`<?xml version="1.0" encoding="UTF-8"?><workbook xmlns="http://schemas.openxmlformats.org/spreadsheetml/2006/main" xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships"><sheets>${sheets.map((s,i)=>`<sheet name="${esc(s.name.slice(0,31))}" sheetId="${i+1}" r:id="rId${i+1}"/>`).join('')}</sheets></workbook>`],['xl/_rels/workbook.xml.rels',`<?xml version="1.0" encoding="UTF-8"?><Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships">${sheets.map((_,i)=>`<Relationship Id="rId${i+1}" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/worksheet" Target="worksheets/sheet${i+1}.xml"/>`).join('')}</Relationships>`]];sheets.forEach((s,i)=>entries.push([`xl/worksheets/sheet${i+1}.xml`,sheetXml(s.rows)]));return zip(entries)};
+})();
+
+</script><script>
+const KEY='sportpark-manager-demo-v1';const today=new Date();const pad=n=>String(n).padStart(2,'0');const iso=d=>`${d.getFullYear()}-${pad(d.getMonth()+1)}-${pad(d.getDate())}`;
+function weekInfo(d){let x=new Date(d.getFullYear(),d.getMonth(),d.getDate());let day=(x.getDay()+6)%7;x.setDate(x.getDate()-day);let thu=new Date(x);thu.setDate(x.getDate()+3);let year=thu.getFullYear();let jan4=new Date(year,0,4);let first=new Date(jan4);first.setDate(jan4.getDate()-(jan4.getDay()+6)%7);return {key:iso(x),week:Math.round((x-first)/604800000)+1,year,start:x}}
+let state;try{state=JSON.parse(localStorage.getItem(KEY))||{}}catch{state={}};state.reports ||= {};state.meters ||= {};state.tasks ||= [];state.firms ||= [];state.reminders ||= [];state.completedReports ||= {};state.completedMeters ||= {};state.sharedWeeks ||= {};state.week ||= weekInfo(today).key;state.month ||= iso(today).slice(0,7);state.name ||= 'Testperson';state.personal ||= '';state.quick ||= [{name:'Beispiel Grünpflege',order:'TEST-001',activity:'01'},{name:'Beispiel Kontrolle',order:'TEST-002',activity:'02'}];
+const POSITION_KEY=KEY+'_last_position';
+let lastPosition={};try{lastPosition=JSON.parse(localStorage.getItem(POSITION_KEY))||{}}catch(e){}
+let positionSaveTimer=0;
+function saveReportPosition(cell){
+ if(page!=='berichte')return;
+ lastPosition={week:state.week,y:Math.max(0,window.scrollY),x:document.querySelector('.mobile-table-scroll')?.scrollLeft||0,cell:cell||lastPosition.cell||null};
+ try{localStorage.setItem(POSITION_KEY,JSON.stringify(lastPosition))}catch(e){}
+}
+function restoreReportPosition(){
+ if(page!=='berichte'||lastPosition.week!==state.week)return;
+ const restore=()=>{const scroller=document.querySelector('.mobile-table-scroll');if(scroller)scroller.scrollLeft=lastPosition.x||0;window.scrollTo(0,lastPosition.y||0)};
+ requestAnimationFrame(()=>{restore();requestAnimationFrame(restore)});
+}
+window.addEventListener('scroll',()=>{if(page==='berichte'){clearTimeout(positionSaveTimer);positionSaveTimer=setTimeout(()=>saveReportPosition(),150)}},{passive:true});
+let page='berichte',side=0;try{const req=indexedDB.open('sportpark-manager-demo',1);req.onupgradeneeded=()=>req.result.createObjectStore('state');req.onsuccess=()=>{let db=req.result,tx=db.transaction('state','readonly'),get=tx.objectStore('state').get('current');get.onsuccess=()=>{if(get.result&&!localStorage.getItem(KEY)){try{state=JSON.parse(get.result);render()}catch(e){}}};tx.oncomplete=()=>db.close()}}catch(e){}const persist=()=>{const snapshot=JSON.stringify(state);try{localStorage.setItem(KEY,snapshot)}catch(e){console.warn('Lokale Speicherung nicht verfügbar; versuche IndexedDB',e)}try{const req=indexedDB.open('sportpark-manager-demo',1);req.onupgradeneeded=()=>{if(!req.result.objectStoreNames.contains('state'))req.result.createObjectStore('state')};req.onsuccess=()=>{const db=req.result;try{const tx=db.transaction('state','readwrite');tx.objectStore('state').put(snapshot,'current');tx.oncomplete=()=>db.close();tx.onerror=()=>{console.warn('IndexedDB-Speicherung fehlgeschlagen',tx.error);db.close()}}catch(e){console.warn('IndexedDB-Transaktion fehlgeschlagen',e);db.close()}};req.onerror=()=>console.warn('IndexedDB konnte nicht geöffnet werden',req.error)}catch(e){console.warn('IndexedDB nicht verfügbar',e)}};const $=id=>document.getElementById(id);const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));const names={berichte:'Tagesberichte',verbrauch:'Verbrauchswerte',aufgaben:'Zu erfüllende Aufgaben',firmen:'Firmen',archiv:'Archiv',einstellungen:'Einstellungen'};
+function go(p){if(page==='berichte')saveReportPosition();page=p;render();if(page==='berichte')restoreReportPosition()};function render(){ $('nav').innerHTML=Object.entries(names).map(([k,v])=>`<button class="${page===k?'active':''}" onclick="go('${k}')">${v}</button>`).join('');$('view').innerHTML=({berichte:renderReport,verbrauch:renderMeters,aufgaben:renderTasks,firmen:renderFirms,archiv:renderArchive,einstellungen:renderSettings})[page]();updateBell()}
+function dateFromWeek(){let [y,m,d]=state.week.split('-').map(Number);return new Date(y,m-1,d)}function changeWeek(n){let d=dateFromWeek();d.setDate(d.getDate()+7*n);state.week=iso(d);persist();render()};function changeMonth(n){let [y,m]=state.month.split('-').map(Number);let d=new Date(y,m-1+n,1);state.month=iso(d).slice(0,7);persist();render()}
+const dayNames=['Montag','Dienstag','Mittwoch','Donnerstag','Freitag','Samstag','Sonntag'];const counts=[7,7,7,7,5,4,4];const fields=['zeit','auftrag','taetigkeit','fahrzeug','plus','minus','db'];const labels=['Zeit','Auftragsnummer','Leistungs-arten','Fahrzeuge- / Geräte-einsatz','ÜS Plus','ÜS Minus','DB; Urlaub; Krank'];const widths=[7,30,8,31,7,7,10];function reportCellKey(d,r,f){return `${d}-${r}-${f}`}
+function renderReport(){let info=weekInfo(dateFromWeek());let data=state.reports[state.week]||{};let days=[0,1,2,3,4,5,6];let out=`<section class="panel"><h2>Tagesberichte</h2><div class="toolbar"><button onclick="changeWeek(-1)">◀ Woche zurück</button><strong>Woche ${info.week} / ${info.year}</strong><button onclick="changeWeek(1)">Nächste Woche ▶</button><button onclick="exportWeekXlsx()" class="primary">Excel speichern</button><button id="teamsShare" onclick="shareWeek()" ${state.sharedWeeks[state.week]===weekSignature(state.week)?'disabled':''}>Teilen mit Teams</button></div><div class="favtop"><strong>Schnellauswahl:</strong> <button onclick="showQuick()">Eintrag wählen</button></div><p class="hint">Jede Zelle lässt sich einzeln bearbeiten. Auswahlfelder öffnen die passende Liste. Alle Änderungen werden automatisch lokal gespeichert.</p><div class="sheetwrap" id="reportSwipeArea"><div class="paper" id="printPaper"><div class="paperhead"><span>Name, Vorname<br>${esc(state.name)}</span><span>Personalnummer<br>${esc(state.personal)}</span><span>Woche<br>${info.week}</span><span>${info.year}</span></div><table><colgroup>${widths.map(w=>`<col style="width:${w}%">`).join('')}</colgroup><thead><tr>${labels.map(l=>`<th>${l}</th>`).join('')}</tr></thead><tbody>`;
+for(let d of days){let date=new Date(info.start);date.setDate(date.getDate()+d);out+=`<tr class="day"><td colspan="7">${dayNames[d]}, Datum &nbsp; ${pad(date.getDate())}.${pad(date.getMonth()+1)}.${date.getFullYear()}</td></tr>`;for(let r=0;r<counts[d];r++){out+='<tr>';for(let f=0;f<7;f++){let k=reportCellKey(d,r,fields[f]);let val=data[k]||'';out+=`<td><button title="${esc(val)}" onclick="editCell(${d},${r},${f})">${esc(val)||'&nbsp;'}</button></td>`}out+='</tr>'}}
+out+='</tbody></table>';out+=`<div class="mobile-days"><div class="mobile-page"><div class="mobile-table-scroll"><table class="compact-report"><colgroup>${widths.map(w=>`<col style="width:${w}%">`).join('')}</colgroup><thead><tr>${labels.map(l=>`<th>${esc(l)}</th>`).join('')}</tr></thead><tbody>`;for(let d=0;d<7;d++){let date=new Date(info.start);date.setDate(date.getDate()+d);out+=`<tr class="compact-day"><td colspan="7">${dayNames[d]} · ${pad(date.getDate())}.${pad(date.getMonth()+1)}.${date.getFullYear()}</td></tr>`;for(let r=0;r<counts[d];r++){out+='<tr>';for(let f=0;f<fields.length;f++){let val=data[reportCellKey(d,r,fields[f])]||'';out+=`<td><button title="${esc(labels[f])}: ${esc(val)}" onclick="editCell(${d},${r},${f})">${esc(val)||'+'}</button></td>`}out+='</tr>'}}out+='</tbody></table></div></div></div>';out+='</div></div></section>' ;return out}
+function setSide(next){if(side===next)return;side=next;render();const switcher=document.querySelector('.side-switch');if(switcher) switcher.scrollIntoView({block:'nearest'});}
+function editCell(d,r,f){saveReportPosition({d,r,f});let key=reportCellKey(d,r,fields[f]);let old=(state.reports[state.week]||{})[key]||'';let list=({1:'auftraege',2:'taetigkeiten',3:'fahrzeuge'})[f];if(f===0||f>=4){showTimeChoices(d,r,old,f);return}if(f===3){showVehicleChoices(d,r,old);return}if(list){let data=STAMMDATEN[list];$('modal').innerHTML=`<div class="dialogshade" onclick="closeModal(event)"><div class="dialog"><div class="toolbar"><strong>${esc(labels[f])} auswählen</strong><button onclick="hideModal()">✕</button></div><input id="choiceSearch" placeholder="Nummer oder Bezeichnung suchen" oninput="filterChoices('${list}',${d},${r},${f})"><div class="choices" id="choices" role="listbox" aria-label="Auswahlliste"></div><button onclick="setCell(${d},${r},${f},'')">Eintrag löschen</button></div></div>`;filterChoices(list,d,r,f);}else{let val=prompt(labels[f]+' eingeben:',old);if(val!==null)setCell(d,r,f,val)}}
+const TIME_FAVORITES=['0,25','0,5','1','3,75','4,75','8,5'];
+const TIME_OTHER=['0,75','1,25','1,5','1,75','2','2,25','2,5','2,75','3','3,25','3,5','4','4,25','4,5','5','5,25','5,5','5,75','6','6,25','6,5','6,75','7','7,25','7,5','7,75','8','8,25','8,75','9'];
+function showTimeChoices(d,r,old,f=0){
+const freeText=f===6;
+const timeButton=(v,fav)=>`<button type="button" class="time-choice ${fav?'time-favorite':''}" onclick="setCell(${d},${r},${f},'${v}')">${v} h</button>`;
+$('modal').innerHTML=`<div class="dialogshade" onclick="closeModal(event)"><div class="dialog time-dialog"><div class="toolbar"><strong>${esc(labels[f])} auswählen</strong><button onclick="hideModal()">✕</button></div><p class="hint">Häufig verwendet</p><div class="time-grid">${TIME_FAVORITES.map(v=>timeButton(v,true)).join('')}</div><p class="hint">Weitere Zeiten</p><div class="time-grid">${TIME_OTHER.map(v=>timeButton(v,false)).join('')}</div><label for="customTime">${freeText?'Eigene Eingabe (Zahl oder Kürzel)':'Andere Zeit eingeben'}</label><div class="time-custom"><input id="customTime" inputmode="${freeText?'text':'decimal'}" placeholder="${freeText?'z. B. 8,5 oder U':'z. B. 2,25'}" value="${esc(old)}"><button class="primary" onclick="saveCustomTime(${d},${r},${f})">Übernehmen</button></div><button onclick="setCell(${d},${r},${f},'')">Eintrag löschen</button></div></div>`;
+}
+function saveCustomTime(d,r,f=0){let v=$('customTime').value.trim();if(f===6){if(!v||v.length>20){alert('Bitte eine Zahl oder ein kurzes Kürzel eingeben (maximal 20 Zeichen).');return}if(/^\d+(?:[.,]\d{1,2})?$/.test(v))v=v.replace('.',',')}else{v=v.replace('.',',');if(!/^\d+(,\d{1,2})?$/.test(v)){alert('Bitte eine gültige Stundenzahl eingeben, z. B. 4,75.');return}}setCell(d,r,f,v)}
+const FAVORITES={auftraege:[],taetigkeiten:[],fahrzeuge:[]};
+state.favorites ||= JSON.parse(JSON.stringify(FAVORITES));
+function normFav(id){return String(Number(String(id).replace(/\D/g,'')))}
+function favIndex(list,id){return (state.favorites[list]||[]).findIndex(x=>normFav(x)===normFav(id))}
+function favItem(list,id){return STAMMDATEN[list].find(x=>normFav(x.id)===normFav(id))}
+function showFavoriteManager(list='auftraege'){const names={auftraege:'Aufträge',taetigkeiten:'Tätigkeiten',fahrzeuge:'Fahrzeuge'};let items=(state.favorites[list]||[]).map(id=>favItem(list,id)).filter(Boolean);$('modal').innerHTML=`<div class="dialogshade" onclick="closeModal(event)"><div class="dialog fav-dialog"><div class="toolbar"><strong>Favoriten bearbeiten</strong><button onclick="hideModal()">✕</button></div><div class="fav-tabs">${Object.entries(names).map(([key,name])=>`<button class="${list===key?'active':''}" onclick="showFavoriteManager('${key}')">${name}</button>`).join('')}</div><p class="hint">Am Griff ≡ gedrückt halten und an die gewünschte Stelle ziehen. Auf dem PC auch mit der Maus.</p><div id="favoriteRows" class="favorite-rows">${items.map(x=>`<div class="favorite-row" data-fav-id="${esc(x.id)}"><span class="drag-handle" title="Zum Sortieren ziehen">☰</span><span class="fav-description"><b>${esc(x.id)}</b><span>${esc(x.label)}</span></span><button class="remove-fav" onclick="removeFavorite('${list}','${x.id}')" aria-label="Favorit entfernen">✕</button></div>`).join('')}</div><button class="primary add-favorite" onclick="showAddFavorite('${list}')">＋ Favorit hinzufügen</button></div></div>`;installFavDrag(list)}
+function removeFavorite(list,id){state.favorites[list]=state.favorites[list].filter(x=>normFav(x)!==normFav(id));persist();showFavoriteManager(list)}
+function showAddFavorite(list){const items=STAMMDATEN[list].filter(x=>favIndex(list,x.id)<0);$('modal').innerHTML=`<div class="dialogshade" onclick="closeModal(event)"><div class="dialog fav-dialog"><div class="toolbar"><strong>Favorit hinzufügen</strong><button onclick="showFavoriteManager('${list}')">← Zurück</button></div><input id="favAddSearch" placeholder="Nummer oder Begriff suchen" oninput="filterFavAdd('${list}')"><div id="favAddResults" class="fav-add-results"></div></div></div>`;filterFavAdd(list)}
+function filterFavAdd(list){let q=$('favAddSearch').value.toLowerCase();let items=STAMMDATEN[list].filter(x=>favIndex(list,x.id)<0&&(x.id+' '+x.label).toLowerCase().includes(q));$('favAddResults').innerHTML=items.map(x=>`<button class="fav-add-row" onclick="addFavorite('${list}','${x.id}')"><span><b>${esc(x.id)}</b><span>${esc(x.label)}</span></span><strong>＋</strong></button>`).join('')||'<p>Keine weiteren Einträge gefunden.</p>'}
+function addFavorite(list,id){state.favorites[list].push(id);persist();showFavoriteManager(list)}
+function installFavDrag(list){let root=$('favoriteRows'),drag=null,ghost=null;
+function findTarget(y){let rows=[...root.querySelectorAll('.favorite-row')];return rows.find(el=>{let r=el.getBoundingClientRect();return y<r.top+r.height/2})||null}
+root.addEventListener('pointerdown',e=>{let handle=e.target.closest('.drag-handle');if(!handle)return;let row=handle.closest('.favorite-row');drag={row,id:e.pointerId,startY:e.clientY,active:false};handle.setPointerCapture(e.pointerId);handle.style.touchAction='none';e.preventDefault()});
+root.addEventListener('pointermove',e=>{if(!drag||e.pointerId!==drag.id)return;if(!drag.active&&Math.abs(e.clientY-drag.startY)>5){drag.active=true;drag.row.classList.add('dragging')}if(!drag.active)return;let target=findTarget(e.clientY);if(target!==drag.row){if(target)root.insertBefore(drag.row,target);else root.appendChild(drag.row)}e.preventDefault()});
+function finish(e){if(!drag||e.pointerId!==drag.id)return;drag.row.classList.remove('dragging');if(drag.active){state.favorites[list]=[...root.querySelectorAll('.favorite-row')].map(el=>el.dataset.favId);persist()}drag=null}
+root.addEventListener('pointerup',finish);root.addEventListener('pointercancel',finish);
+}
+
+function showVehicleChoices(d,r,old){
+$('modal').innerHTML=`<div class="dialogshade" onclick="closeModal(event)"><div class="dialog"><div class="toolbar"><strong>Fahrzeuge-/Geräteeinsatz oder Anmerkung</strong><button onclick="showVehicleText(${d},${r},${!!old.trim()})">Text eingeben</button><button onclick="hideModal()">✕</button></div><input id="vehicleSearch" placeholder="Nummer oder Bezeichnung suchen" oninput="filterVehicleChoices(${d},${r})"><div id="vehicleChoices" class="choices" role="listbox" aria-label="Fahrzeuge und Geräte"></div><button onclick="setCell(${d},${r},3,'')">Eintrag löschen</button></div></div>`;
+filterVehicleChoices(d,r);
+}
+function showVehicleText(d,r,append){
+const key=reportCellKey(d,r,'fahrzeug'),old=(state.reports[state.week]||{})[key]||'';
+$('modal').innerHTML=`<div class="dialogshade" onclick="closeModal(event)"><div class="dialog"><div class="toolbar"><strong>${append?'Text dahinter schreiben':'Anmerkung eingeben'}</strong><button onclick="hideModal()">✕</button></div>${append?`<p class="hint">Vorhanden: <strong>${esc(old)}</strong></p>`:''}<textarea id="vehicleFreeText" rows="3" placeholder="z. B. Vertretung für Kollegen">${append?'':esc(old)}</textarea><div class="toolbar"><button class="primary" onclick="saveVehicleText(${d},${r},${append})">Übernehmen</button><button onclick="showVehicleChoices(${d},${r},(state.reports[state.week]||{})[reportCellKey(${d},${r},'fahrzeug')]||'')">Zurück</button></div></div></div>`;
+}
+function filterVehicleChoices(d,r){let q=$('vehicleSearch').value.toLowerCase();let items=STAMMDATEN.fahrzeuge.filter(x=>(x.id+' '+x.label).toLowerCase().includes(q));items.sort((a,b)=>{let ai=favIndex('fahrzeuge',a.id),bi=favIndex('fahrzeuge',b.id);return ai<0&&bi<0?0:ai<0?1:bi<0?-1:ai-bi});$('vehicleChoices').innerHTML=items.map(x=>`<button class="${favIndex('fahrzeuge',x.id)>=0?'favorite-choice':''}" onclick="setCell(${d},${r},3,'${x.id}')"><b>${esc(x.id)}</b><span>${esc(x.label)}</span></button>`).join('')||'<p>Keine Treffer</p>'}
+function saveVehicleText(d,r,append=false){let value=$('vehicleFreeText').value.trim();let old=(state.reports[state.week]||{})[reportCellKey(d,r,'fahrzeug')]||'';if(append){if(!value){alert('Bitte einen Zusatztext eingeben.');return}value=old?old+' – '+value:value}if(value.length>250){alert('Bitte maximal 250 Zeichen eingeben.');return}setCell(d,r,3,value)}
+function filterChoices(list,d,r,f){let q=$('choiceSearch').value.toLowerCase();let choices=STAMMDATEN[list].filter(x=>(x.id+' '+x.label).toLowerCase().includes(q));choices.sort((a,b)=>{const ai=favIndex(list,a.id),bi=favIndex(list,b.id);return ai<0&&bi<0?0:ai<0?1:bi<0?-1:ai-bi});$('choices').innerHTML=choices.map(x=>`<button class="${favIndex(list,x.id)>=0?'favorite-choice':''}" onclick="setCell(${d},${r},${f},'${x.id}')"><b>${esc(x.id)}</b><span>${esc(x.label)}</span></button>`).join('')||'<div class="empty">Keine Treffer</div>'}
+function setCell(d,r,f,value){
+ const vertical=window.scrollY;
+ const horizontal=[...document.querySelectorAll('.mobile-table-scroll')].map(el=>el.scrollLeft);
+ state.reports[state.week] ||= {};
+ state.reports[state.week][reportCellKey(d,r,fields[f])]=value;
+ persist();hideModal();render();
+ document.querySelectorAll('.mobile-table-scroll').forEach((el,i)=>{el.scrollLeft=horizontal[i]||0});
+ window.scrollTo(0,vertical);
+ requestAnimationFrame(()=>{window.scrollTo(0,vertical);saveReportPosition({d,r,f})});
+};function hideModal(){$('modal').innerHTML=''};function closeModal(e){if(e.target.classList.contains('dialogshade'))hideModal()}
+
+function weekSignature(key){return JSON.stringify([state.reports[key]||{},state.name,state.personal]);}
+function renderArchive(){
+ const keys=[...new Set([...Object.keys(state.reports),...Object.keys(state.sharedWeeks),state.week])].sort().reverse();
+ return `<section class="panel"><h2>Archiv – Tagesberichte</h2><p class="hint">Alle Eingaben werden automatisch lokal gespeichert. Grüner Haken = Teilen gestartet.</p>`+
+ keys.map(key=>{let [y,m,d]=key.split('-').map(Number),i=weekInfo(new Date(y,m-1,d)),shared=state.sharedWeeks[key]===weekSignature(key);
+ return `<div class="meter"><div><strong>${shared?'✅':'📄'} KW ${String(i.week).padStart(2,'0')} / ${i.year}</strong><small>${shared?'Teilen gestartet':'Nicht geteilt oder seitdem geändert'}</small></div><button onclick="openArchivedWeek('${key}')">Öffnen</button></div>`}).join('')+'</section>';
+}
+function openArchivedWeek(key){state.week=key;side=0;persist();go('berichte')}
+async function shareWeek(){
+ const key=state.week,info=weekInfo(dateFromWeek()),filename='Tagesbericht_KW'+String(info.week).padStart(2,'0')+'_'+info.year+'.xlsx';
+ let blob;try{blob=buildWeekXlsxBlob()}catch(err){alert('Excel-Erstellung fehlgeschlagen: '+err.message);return}
+ const file=new File([blob],filename,{type:'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'});
+ if(navigator.share && navigator.canShare && navigator.canShare({files:[file]})){
+   // The share sheet cannot be observed directly. Keep any previous marker
+   // until the platform confirms the sharing interaction completed.
+   const previousMarker=state.sharedWeeks[key];
+   try{
+     await navigator.share({files:[file],title:filename});
+     state.sharedWeeks[key]=weekSignature(key);persist();render();
+   }catch(err){
+     if(previousMarker===undefined)delete state.sharedWeeks[key];
+     else state.sharedWeeks[key]=previousMarker;
+     persist();render();
+     if(err.name!=='AbortError')alert('Teilen nicht möglich: '+err.message);
+   }
+ }else{
+   alert('Auf diesem Gerät ist direktes Teilen von Excel-Dateien nicht verfügbar. Die Datei wird heruntergeladen; es wird kein grüner Haken gesetzt.');
+   download(filename,blob);
+ }
+}
+
+function renderMeters(){let d=new Date(state.month+'-01T12:00:00');return `<section class="panel"><h2>Verbrauchswerte</h2><div class="toolbar"><button onclick="changeMonth(-1)">◀</button><strong>${d.toLocaleDateString('de-DE',{month:'long',year:'numeric'})}</strong><button onclick="changeMonth(1)">▶</button><button class="primary" onclick="exportMeterXlsx()">Monat als Excel herunterladen</button><button onclick="shareMeterXlsx()">Excel teilen (Teams / E-Mail)</button></div><p class="hint">Zählerstände werden bei jeder Änderung automatisch gespeichert. Der fertige Monat kann als Excel-Datei heruntergeladen oder über die Android-Teilen-Funktion an Teams bzw. eine E-Mail-App übergeben werden.</p>${ZAEHLER.map(([name,addr,type,num],i)=>`<div class="meter"><div><strong>${esc(name)}</strong><small>${esc(addr)} · ${type} · Zähler ${esc(num)}</small></div><input inputmode="decimal" placeholder="Zählerstand" value="${esc((state.meters[state.month]||{})[num]||'')}" oninput="saveMeter('${num}',this.value)"></div>`).join('')}</section>`}
+function saveMeter(num,val){state.meters[state.month] ||= {};state.meters[state.month][num]=val;persist()};function exportMeter(){let data=state.meters[state.month]||{};let csv='Verbrauchsstelle;Adresse;Sparte;Zählernummer;Zählerstand\n'+ZAEHLER.map(a=>[...a,data[a[3]]||''].join(';')).join('\n');download('Verbrauch_'+state.month+'.csv',new Blob(['\ufeff'+csv],{type:'text/csv;charset=utf-8'}));state.completedMeters[state.month]=true;persist()}
+function renderTasks(){return `<section class="panel"><h2>Zu erfüllende Aufgaben</h2><div class="toolbar"><input id="newTask" placeholder="Neue Aufgabe" onkeydown="if(event.key==='Enter')addTask()"><button class="primary" onclick="addTask()">Hinzufügen</button></div>${state.tasks.map((x,i)=>`<div class="item ${x.done?'done':''}"><label><input type="checkbox" ${x.done?'checked':''} onchange="state.tasks[${i}].done=this.checked;persist();render()"> ${esc(x.text)}</label><button onclick="state.tasks.splice(${i},1);persist();render()">Löschen</button></div>`).join('')||'<div class="empty">Noch keine Aufgaben</div>'}</section>`}
+function addTask(){let v=$('newTask').value.trim();if(v){state.tasks.push({text:v,done:false});persist();render()}}
+function renderFirms(){return `<section class="panel"><h2>Firmen</h2><div class="toolbar"><input id="firmName" placeholder="Firmenname"><input id="firmPhone" placeholder="Telefonnummer"><input id="firmWeb" placeholder="Website"><button class="primary" onclick="addFirm()">Hinzufügen</button></div>${state.firms.map((f,i)=>`<div class="item"><div><strong>${esc(f.name)}</strong><div class="toolbar">${f.phone?`<a href="tel:${encodeURIComponent(f.phone)}">📞 ${esc(f.phone)}</a>`:''}${f.web?`<a target="_blank" rel="noopener" href="${esc(f.web)}">🌐 Website</a>`:''}</div></div><button onclick="state.firms.splice(${i},1);persist();render()">Löschen</button></div>`).join('')||'<div class="empty">Noch keine Firmen hinterlegt</div>'}</section>`}
+function addFirm(){let name=$('firmName').value.trim(),phone=$('firmPhone').value.trim(),web=$('firmWeb').value.trim();if(!name)return;if(web&&!/^https?:\/\//i.test(web))web='https://'+web;state.firms.push({name,phone,web});persist();render()}
+function renderSettings(){return `<section class="panel"><h2>Einstellungen</h2><div class="toolbar"><label>Name <input value="${esc(state.name)}" onchange="state.name=this.value;persist()"></label><label>Personalnummer <input value="${esc(state.personal)}" onchange="state.personal=this.value;persist()"></label></div><h3>Wartungserinnerungen</h3><div class="toolbar"><input id="remText" placeholder="Wartungsaufgabe"><input id="remDate" type="date"><button onclick="addReminder()">Termin hinzufügen</button></div>${state.reminders.map((r,i)=>`<div class="item ${r.done?'done':''}"><label><input type="checkbox" ${r.done?'checked':''} onchange="state.reminders[${i}].done=this.checked;persist();render()"> ${esc(r.text)} – ${esc(r.date)}</label><button onclick="state.reminders.splice(${i},1);persist();render()">Löschen</button></div>`).join('')}<h3>Schnellauswahl</h3><p class="hint">Vordefinierte Kombinationen aus Auftragsnummer und Leistungsart verwalten.</p><button onclick="manageQuick()">Einträge verwalten</button><h3>Favoriten</h3><p class="hint">Die Favoriten bleiben immer oben in deiner festgelegten Reihenfolge.</p><button onclick="showFavoriteManager()">Favoriten bearbeiten</button><h3>Datensicherung</h3><div class="toolbar"><button onclick="backup()">Sicherung herunterladen (JSON)</button><label> Sicherung wiederherstellen <input type="file" accept="application/json" onchange="restore(event)"></label></div><p class="hint">Die Daten liegen nur auf diesem Gerät in diesem Browser. Regelmäßig eine Sicherung herunterladen. Browserdaten nicht löschen.</p></section>`}
+function addReminder(){let text=$('remText').value.trim(),date=$('remDate').value;if(text&&date){state.reminders.push({text,date,done:false});persist();render()}}
+function updateBell(){let due=state.reminders.filter(x=>!x.done&&x.date<=iso(today));$('dueCount').textContent=due.length};$('bell').onclick=()=>{go('einstellungen')};function download(filename,blob){let a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download=filename;a.click();setTimeout(()=>URL.revokeObjectURL(a.href),2000)}
+function backup(){if(page==='berichte')saveReportPosition();const payload={...state,_backupMeta:{format:'sportpark-manager-demo-backup',version:2,createdAt:new Date().toISOString(),reportPosition:lastPosition}};download('Sportpark_DEMO_Sicherung_'+iso(today)+'.json',new Blob([JSON.stringify(payload,null,2)],{type:'application/json'}))}
+function restore(e){const f=e.target.files[0];if(!f)return;if(f.size>5*1024*1024){alert('Sicherung zu groß (maximal 5 MB).');e.target.value='';return}const reader=new FileReader();reader.onload=()=>{try{const obj=JSON.parse(reader.result);if(!obj||typeof obj!=='object'||Array.isArray(obj)||!obj.reports||typeof obj.reports!=='object'||Array.isArray(obj.reports)||!obj.meters||typeof obj.meters!=='object'||Array.isArray(obj.meters))throw Error('Ungültige Sicherung');if(obj._backupMeta?.format!=='sportpark-manager-demo-backup')throw Error('Diese Demo akzeptiert nur Sicherungen aus der Demo. Private Arbeitsdaten bitte ausschließlich in der privaten App wiederherstellen.');if(!Array.isArray(obj.tasks||[])||!Array.isArray(obj.firms||[])||!Array.isArray(obj.reminders||[]))throw Error('Ungültige Listen in der Sicherung');if(confirm('Sicherung enthält '+Object.keys(obj.reports).length+' Wochenberichte und '+Object.keys(obj.meters).length+' Monatsdatensätze.\n\nACHTUNG: Alle aktuell in dieser App gespeicherten Daten werden ersetzt.\n\nVorher möglichst eine Sicherung der aktuellen Daten herunterladen.\n\nSicherung jetzt wiederherstellen?')){const position=obj._backupMeta?.reportPosition;delete obj._backupMeta;state=obj;state.reports ||= {};state.meters ||= {};state.tasks ||= [];state.firms ||= [];state.reminders ||= [];state.completedReports ||= {};state.completedMeters ||= {};state.sharedWeeks ||= {};lastPosition=(position&&typeof position==='object'&&position.week===state.week)?position:{};try{if(lastPosition.week)localStorage.setItem(POSITION_KEY,JSON.stringify(lastPosition));else localStorage.removeItem(POSITION_KEY)}catch(err){console.warn('Berichtsposition konnte nicht gespeichert werden',err)}persist();render();restoreReportPosition()}}catch(err){alert('Sicherung konnte nicht gelesen werden: '+err.message)}finally{e.target.value=''}};reader.onerror=()=>{alert('Sicherungsdatei konnte nicht gelesen werden');e.target.value=''};reader.readAsText(f)}
+async function downloadReport(){let el=$('printPaper');let c=document.createElement('canvas');const scale=2;c.width=840*scale;c.height=1300*scale;let ctx=c.getContext('2d');ctx.scale(scale,scale);ctx.fillStyle='#fff';ctx.fillRect(0,0,840,1300);ctx.fillStyle='#000';ctx.font='bold 16px Arial';let info=weekInfo(dateFromWeek());ctx.fillText('Name, Vorname',20,25);ctx.fillText('Personalnummer',360,25);ctx.fillText('Woche',685,25);ctx.fillText(info.year,770,25);ctx.font='16px Arial';ctx.fillText(state.name,20,50);ctx.fillText(state.personal,360,50);ctx.fillText(info.week,695,50);let xs=[20,76,326,393,655,711,773,820],y=65;ctx.lineWidth=1.3;function cell(x1,x2,top,height,text,bold=false){ctx.strokeRect(x1,top,x2-x1,height);ctx.font=(bold?'bold ':'')+'12px Arial';ctx.fillStyle='#000';if(text)ctx.fillText(String(text).slice(0,Math.floor((x2-x1)/7)),x1+4,top+height/2+4)};labels.forEach((t,i)=>cell(xs[i],xs[i+1],y,56,t,true));y+=56;let days=side===0?[0,1,2]:[3,4,5,6],data=state.reports[state.week]||{};for(let d of days){let date=new Date(info.start);date.setDate(date.getDate()+d);cell(xs[0],xs[7],y,24,`${dayNames[d]}, Datum   ${pad(date.getDate())}.${pad(date.getMonth()+1)}.${date.getFullYear()}`,true);y+=24;for(let r=0;r<counts[d];r++){for(let f=0;f<7;f++)cell(xs[f],xs[f+1],y,42,data[reportCellKey(d,r,fields[f])]||'');y+=42}}if(side===1){ctx.font='11px Arial';ctx.fillText('Samstagsstunden: nach 13:00 Uhr    Nachtstunden: zwischen 21:00 Uhr und 06:00 Uhr',20,y+22)}c.toBlob(blob=>{if(blob){download(`Tagesbericht_${state.week}_${side===0?'Vorderseite':'Rueckseite'}.jpg`,blob);state.completedReports[state.week] ||= {};state.completedReports[state.week][side===0?'front':'back']=true;persist()}},'image/jpeg',.94)}
+
+function showQuick(){let html=state.quick.map((q,i)=>`<button class="${i<9?'fav':''}" onclick="chooseQuick(${i})">${esc(q.name)}</button>`).join('');$('modal').innerHTML=`<div class="dialogshade" onclick="closeModal(event)"><div class="dialog"><div class="toolbar"><strong>Schnellauswahl</strong><button onclick="hideModal()">✕</button></div><p class="hint">Wähle einen Eintrag und danach die Zeile im Tagesbericht.</p><div class="choices">${html}</div></div></div>`}
+let selectedQuick=null;function chooseQuick(i){selectedQuick=i;hideModal();alert('Jetzt im Tagesbericht die Auftragsnummer der gewünschten Zeile antippen. Beide Nummern werden übernommen.')}
+const originalEditCell=editCell;editCell=function(d,r,f){if(selectedQuick!==null&&f===1){const q=state.quick[selectedQuick];state.reports[state.week] ||= {};state.reports[state.week][reportCellKey(d,r,'auftrag')]=q.order;state.reports[state.week][reportCellKey(d,r,'taetigkeit')]=q.activity;selectedQuick=null;persist();render();return}originalEditCell(d,r,f)};
+function manageQuick(){let items=state.quick.map((q,i)=>`<div class="item"><span>${esc(q.name)} <small>(${esc(q.order)}, ${esc(q.activity)})</small></span><span><button class="smallaction" onclick="editQuick(${i})">Ändern</button><button class="smallaction" onclick="deleteQuick(${i})">✕</button></span></div>`).join('');$('modal').innerHTML=`<div class="dialogshade" onclick="closeModal(event)"><div class="dialog"><div class="toolbar"><strong>Schnellauswahl verwalten</strong><button onclick="hideModal()">✕</button></div><div class="choices">${items}</div><button class="primary" onclick="editQuick(-1)">+ Neuer Eintrag</button></div></div>`}
+function editQuick(i){let q=i<0?{name:'',order:'',activity:''}:state.quick[i];let name=prompt('Bezeichnung',q.name);if(name===null||!name.trim())return;let order=prompt('Auftragsnummer (z. B. TEST-001)',q.order);if(order===null)return;let activity=prompt('Tätigkeitsnummer (z. B. 27)',q.activity);if(activity===null)return;order=order.trim();if(/^\d+$/.test(order))order='TEST-'+order.padStart(5,'0');let entry={name:name.trim(),order,activity:activity.trim()};if(i<0)state.quick.push(entry);else state.quick[i]=entry;persist();manageQuick()}
+function deleteQuick(i){if(confirm('Schnellauswahl-Eintrag löschen?')){state.quick.splice(i,1);persist();manageQuick()}}
+function xmlSafe(value){return String(value??'').replace(/[<>&"']/g,ch=>({'<':'&lt;','>':'&gt;','&':'&amp;','"':'&quot;',"'":'&apos;'}[ch]))}
+function templateCell(xml,ref,value){
+  const pattern=new RegExp('<(?:x:)?c\\b[^>]*\\br="'+ref+'"[^>]*>');
+  const match=pattern.exec(xml);
+  if(!match)throw Error('Missing template cell '+ref);
+  const tag=match[0],prefix=tag.startsWith('<x:')?'x:':'';
+  const style=(tag.match(/\s+s="([^"]*)"/)||[])[1];
+  const attr=style?' s="'+style+'"':'';
+  const replacement='<'+prefix+'c r="'+ref+'"'+attr+' t="inlineStr"><'+prefix+'is><'+prefix+'t xml:space="preserve">'+xmlSafe(value)+'</'+prefix+'t></'+prefix+'is></'+prefix+'c>';
+  let end=match.index+tag.length;
+  if(!/\/\s*>$/.test(tag)){
+    const closing='</'+prefix+'c>';
+    const closeAt=xml.indexOf(closing,end);
+    if(closeAt<0)throw Error('Unclosed template cell '+ref);
+    end=closeAt+closing.length;
+  }
+  return xml.slice(0,match.index)+replacement+xml.slice(end);
+}
+
+function combineWeekSheets(entries){
+ const ns='http://schemas.openxmlformats.org/spreadsheetml/2006/main';
+ const parser=new DOMParser(),serializer=new XMLSerializer();
+ const front=parser.parseFromString(entries['xl/worksheets/sheet1.xml'],'application/xml');
+ const back=parser.parseFromString(entries['xl/worksheets/sheet2.xml'],'application/xml');
+ if(front.querySelector('parsererror')||back.querySelector('parsererror'))throw Error('Could not read worksheet XML');
+ const frontData=front.getElementsByTagNameNS(ns,'sheetData')[0];
+ const backData=back.getElementsByTagNameNS(ns,'sheetData')[0];
+ const frontMerges=front.getElementsByTagNameNS(ns,'mergeCells')[0];
+ const backMerges=back.getElementsByTagNameNS(ns,'mergeCells')[0];
+ if(!frontData||!backData||!frontMerges||!backMerges)throw Error('Worksheet layout incomplete');
+ // The first sheet has three days, ending at row 27. Its blank fourth-day section is removed.
+ for(const row of Array.from(frontData.children)){if(Number(row.getAttribute('r'))>=28)frontData.removeChild(row)}
+ for(const merge of Array.from(frontMerges.children)){if(Number((merge.getAttribute('ref')||'').match(/\d+/)?.[0])>=28)frontMerges.removeChild(merge)}
+ // Reuse the original back-side rows and cell styles; append Thursday–Sunday below Wednesday.
+ const shift=24;
+ for(const row of Array.from(backData.children)){
+   const old=Number(row.getAttribute('r'));if(old<4)continue;
+   const clone=front.importNode(row,true);clone.setAttribute('r',String(old+shift));
+   for(const cell of Array.from(clone.getElementsByTagNameNS(ns,'c'))){
+     cell.setAttribute('r',cell.getAttribute('r').replace(/(\d+)$/,(_,n)=>String(Number(n)+shift)));
+   }
+   frontData.appendChild(clone);
+ }
+ for(const merge of Array.from(backMerges.children)){
+   const ref=merge.getAttribute('ref');if(Number(ref.match(/\d+/)?.[0])<4)continue;
+   const clone=front.importNode(merge,true);
+   clone.setAttribute('ref',ref.replace(/\d+/g,n=>String(Number(n)+shift)));
+   frontMerges.appendChild(clone);
+ }
+ entries['xl/worksheets/sheet1.xml']=serializer.serializeToString(front);
+ // Keep the original second worksheet in the file for compatibility, but hide it from Excel tabs.
+ entries['xl/workbook.xml']=entries['xl/workbook.xml'].replace(/(<x:sheet\b[^>]*name="Rückseite")/, '$1 state="hidden"');
+ entries['xl/workbook.xml']=entries['xl/workbook.xml'].replace('name="Vorderseite"','name="Wochenbericht"');
+}
+function buildWeekXlsxBlob(){
+ const info=weekInfo(dateFromWeek()),data=state.reports[state.week]||{};
+ const rows=[['DEMO-WOCHENBERICHT','Woche '+info.week+'/'+info.year],['Name',state.name||'Testperson','Personalnummer',state.personal||''],['Tag','Datum',...labels]];
+ for(let d=0;d<7;d++){
+   const date=new Date(info.start);date.setDate(date.getDate()+d);
+   for(let r=0;r<counts[d];r++){
+     rows.push([dayNames[d],iso(date),...fields.map(f=>data[reportCellKey(d,r,f)]||'')]);
+   }
+ }
+ return makeXlsx([{name:'Wochenbericht DEMO',rows}]);
+}
+function exportWeekXlsx(){try{const i=weekInfo(dateFromWeek());download('Tagesbericht_KW'+String(i.week).padStart(2,'0')+'_'+i.year+'.xlsx',buildWeekXlsxBlob())}catch(err){console.error(err);alert('Excel-Export fehlgeschlagen: '+err.message)}}
+function buildMeterXlsxBlob(month=state.month){let data=state.meters[month]||{};let rows=[['Verbrauchswerte',month],['Verbrauchsstelle','Adresse','Sparte','Zählernummer','Zählerstand'],...ZAEHLER.map(a=>[...a,data[a[3]]||''])];return makeXlsx([{name:'Verbrauchswerte',rows}])}
+function exportMeterXlsx(){try{const month=state.month;download('Verbrauch_'+month+'.xlsx',buildMeterXlsxBlob(month));state.completedMeters[month]=true;persist()}catch(err){console.error(err);alert('Excel-Export fehlgeschlagen: '+err.message)}}
+async function shareMeterXlsx(){
+ const month=state.month,filename='Verbrauch_'+month+'.xlsx';
+ let blob;try{blob=buildMeterXlsxBlob(month)}catch(err){alert('Excel-Erstellung fehlgeschlagen: '+err.message);return}
+ const file=new File([blob],filename,{type:'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'});
+ if(navigator.share&&navigator.canShare&&navigator.canShare({files:[file]})){
+  try{await navigator.share({files:[file],title:'Verbrauchswerte '+month});state.completedMeters[month]=true;persist();render()}
+  catch(err){if(err.name!=='AbortError')alert('Teilen nicht möglich: '+err.message)}
+ }else{
+  alert('Direktes Teilen von Excel-Dateien wird hier nicht unterstützt. Bitte die heruntergeladene Datei in Teams oder einer E-Mail-App als Anhang auswählen.');
+  download(filename,blob);
+ }
+}
+render();restoreReportPosition();
+</script></body></html>
