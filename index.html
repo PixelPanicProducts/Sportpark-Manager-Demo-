@@ -24,7 +24,7 @@
  .compact-report td button:active{background:#d9eaf8}
  .paperhead{display:none}
 }
-</style></head><body><header><h1>Sportpark Manager <small style="display:inline-block;font-size:11px;font-weight:normal;vertical-align:middle;margin-left:7px;padding:3px 6px;border:1px solid rgba(255,255,255,.55);border-radius:5px">25.2.1 Beta · DEMO</small></h1><button id="bell" title="Fällige Wartungen">🔔 <span id="dueCount">0</span></button></header><main><p role="note" style="background:#fff4d6;border:1px solid #d9b85a;border-radius:8px;padding:10px 12px;font-size:13px;margin:0 0 12px"><strong>DEMO – nur erfundene Testdaten.</strong> Bitte keine echten Namen, Personalnummern, Zählerstände oder internen Berichte eingeben oder importieren. Eingaben werden lokal auf diesem Gerät gespeichert.</p><nav class="tabs" id="nav"></nav><div id="view"></div></main><div id="modal"></div><div id="splash" class="splash"><div style="padding:24px;font-weight:bold">Sportpark Manager – DEMO mit Beispieldaten</div><button onclick="document.getElementById('splash').remove()">App öffnen</button></div><script>
+</style></head><body><header><h1>Sportpark Manager <small style="display:inline-block;font-size:11px;font-weight:normal;vertical-align:middle;margin-left:7px;padding:3px 6px;border:1px solid rgba(255,255,255,.55);border-radius:5px">25.2.2 Beta · DEMO</small></h1><button id="bell" title="Fällige Wartungen">🔔 <span id="dueCount">0</span></button></header><main><p role="note" style="background:#fff4d6;border:1px solid #d9b85a;border-radius:8px;padding:10px 12px;font-size:13px;margin:0 0 12px"><strong>DEMO – nur erfundene Testdaten.</strong> Bitte keine echten Namen, Personalnummern, Zählerstände oder internen Berichte eingeben oder importieren. Eingaben werden lokal auf diesem Gerät gespeichert.</p><nav class="tabs" id="nav"></nav><div id="view"></div></main><div id="modal"></div><div id="splash" class="splash"><div style="padding:24px;font-weight:bold">Sportpark Manager – DEMO mit Beispieldaten</div><button onclick="document.getElementById('splash').remove()">App öffnen</button></div><script>
 // Ausschließlich erfundene Beispieldaten. Keine realen Standorte, Zähler oder Mitarbeiter.
 const STAMMDATEN = {
   auftraege: [
@@ -142,7 +142,7 @@ function renderArchive(){
  return `<div class="meter"><div><strong>${shared?'✅':'📄'} KW ${String(i.week).padStart(2,'0')} / ${i.year}</strong><small>${shared?'Teilen gestartet':'Nicht geteilt oder seitdem geändert'}</small></div><button onclick="openArchivedWeek('${key}')">Öffnen</button></div>`}).join('')+'</section>';
 }
 function openArchivedWeek(key){state.week=key;side=0;persist();go('berichte')}
-async async function shareWeek(){
+async function shareWeek(){
  const key=state.week,info=weekInfo(dateFromWeek()),filename='Tagesbericht_KW'+String(info.week).padStart(2,'0')+'_'+info.year+'.xlsx';
  let blob;try{blob=buildWeekXlsxBlob()}catch(err){alert('Excel-Erstellung fehlgeschlagen: '+err.message);return}
  const file=new File([blob],filename,{type:'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'});
