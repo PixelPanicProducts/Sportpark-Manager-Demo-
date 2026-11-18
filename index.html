@@ -24,7 +24,7 @@
  .compact-report td button:active{background:#d9eaf8}
  .paperhead{display:none}
 }
-</style></head><body><header><h1>Sportpark Manager <small style="display:inline-block;font-size:11px;font-weight:normal;vertical-align:middle;margin-left:7px;padding:3px 6px;border:1px solid rgba(255,255,255,.55);border-radius:5px">25.3 Beta · DEMO</small></h1><button id="bell" title="Fällige Wartungen">🔔 <span id="dueCount">0</span></button></header><main><p role="note" style="background:#fff4d6;border:1px solid #d9b85a;border-radius:8px;padding:10px 12px;font-size:13px;margin:0 0 12px"><strong>DEMO – nur erfundene Testdaten.</strong> Bitte keine echten Namen, Personalnummern, Zählerstände oder internen Berichte eingeben oder importieren. Eingaben werden lokal auf diesem Gerät gespeichert.</p><nav class="tabs" id="nav"></nav><div id="view"></div></main><div id="modal"></div><div id="splash" class="splash"><div style="padding:24px;font-weight:bold">Sportpark Manager – DEMO mit Beispieldaten</div><button onclick="document.getElementById('splash').remove()">App öffnen</button></div><script>
+</style></head><body><header><h1>Sportpark Manager <small style="display:inline-block;font-size:11px;font-weight:normal;vertical-align:middle;margin-left:7px;padding:3px 6px;border:1px solid rgba(255,255,255,.55);border-radius:5px">25.3.1 Beta · DEMO</small></h1><button id="bell" title="Fällige Wartungen">🔔 <span id="dueCount">0</span></button></header><main><p role="note" style="background:#fff4d6;border:1px solid #d9b85a;border-radius:8px;padding:10px 12px;font-size:13px;margin:0 0 12px"><strong>DEMO – nur erfundene Testdaten.</strong> Bitte keine echten Namen, Personalnummern, Zählerstände oder internen Berichte eingeben oder importieren. Eingaben werden lokal auf diesem Gerät gespeichert.</p><nav class="tabs" id="nav"></nav><div id="view"></div></main><div id="modal"></div><div id="splash" class="splash"><div style="padding:24px;font-weight:bold">Sportpark Manager – DEMO mit Beispieldaten</div><button onclick="document.getElementById('splash').remove()">App öffnen</button></div><script>
 // Ausschließlich erfundene Beispieldaten. Keine realen Standorte, Zähler oder Mitarbeiter.
 const STAMMDATEN = {
   auftraege: [
@@ -138,7 +138,7 @@ function weekSignature(key){return JSON.stringify([state.reports[key]||{},state.
 function renderArchive(){
  const keys=[...new Set([...Object.keys(state.reports),...Object.keys(state.sharedWeeks),...Object.keys(state.completedReports),state.week])].sort().reverse();
  return `<section class="panel"><h2>Archiv – Tagesberichte</h2><p class="hint">Alle Eingaben werden automatisch lokal gespeichert. Grüner Haken = Teilen gestartet.</p>`+
- keys.map(key=>{let [y,m,d]=key.split('-').map(Number),i=weekInfo(new Date(y,m-1,d)),shared=state.sharedWeeks[key]===weekSignature(key);
+ keys.map(key=>{let [y,m,d]=key.split('-').map(Number),i=weekInfo(new Date(y,m-1,d)),shared=state.sharedWeeks[key]===weekSignature(key),completed=!!state.completedReports[key];
  return `<div class="meter"><div><strong>${shared?'✅':'📄'} KW ${String(i.week).padStart(2,'0')} / ${i.year}</strong><small>${shared?'Teilen gestartet':completed?'Excel gespeichert · nicht geteilt':'Nicht geteilt oder seitdem geändert'}</small></div><button onclick="openArchivedWeek('${key}')">Öffnen</button></div>`}).join('')+'</section>';
 }
 function openArchivedWeek(key){state.week=key;side=0;persist();go('berichte')}
@@ -258,7 +258,7 @@ function exportWeekXlsx(){
    let next=new Date(i.start);next.setDate(next.getDate()+7);
    state.week=iso(next);side=0;
    persist();render();
-   alert('Woche '+i.week+'/'+i.year+' wurde als Excel heruntergeladen und im Archiv abgeschlossen. Die nächste Woche ist jetzt geöffnet. Ein Download bestätigt keinen Versand.');
+   alert('Excel-Download gestartet. Woche '+i.week+'/'+i.year+' ist im Archiv abgeschlossen; Woche '+weekInfo(next).week+'/'+weekInfo(next).year+' ist jetzt geöffnet. Der Download bestätigt keinen Versand.');
   }else{persist();render()}
  }catch(err){console.error(err);alert('Excel-Export fehlgeschlagen: '+err.message)}
 }
