@@ -1,0 +1,29 @@
+name: Demo JavaScript Syntax Check
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+jobs:
+  syntax:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Check all embedded JavaScript blocks
+        run: |
+          node - <<'NODE'
+          const fs = require('node:fs');
+          const vm = require('node:vm');
+          const html = fs.readFileSync('index.html', 'utf8');
+          const scripts = [...html.matchAll(/<script(?:\\s[^>]*)?>([\\s\\S]*?)<\\/script>/g)];
+          if (scripts.length !== 3) throw new Error('Expected three embedded scripts, found '+scripts.length);
+          for (const [i, match] of scripts.entries()) {
+            new vm.Script(match[1], {filename: 'demo-script-'+i+'.js'});
+          }
+          if (!html.includes('sportpark-manager-demo-v1')) throw new Error('Demo storage key missing');
+          if (!html.includes('TEST-Z-001')) throw new Error('Demo test data missing');
+          if (html.includes('async async function')) throw new Error('Duplicate async');
+          console.log('All embedded JavaScript scripts parsed successfully');
+          NODE
