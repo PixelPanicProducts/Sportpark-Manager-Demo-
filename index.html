@@ -24,7 +24,7 @@
  .compact-report td button:active{background:#d9eaf8}
  .paperhead{display:none}
 }
-</style></head><body><header><h1>Sportpark Manager <small style="display:inline-block;font-size:11px;font-weight:normal;vertical-align:middle;margin-left:7px;padding:3px 6px;border:1px solid rgba(255,255,255,.55);border-radius:5px">25.1 Alpha · DEMO</small></h1><button id="bell" title="Fällige Wartungen">🔔 <span id="dueCount">0</span></button></header><main><p role="note" style="background:#fff4d6;border:1px solid #d9b85a;border-radius:8px;padding:10px 12px;font-size:13px;margin:0 0 12px"><strong>DEMO – nur erfundene Testdaten.</strong> Bitte keine echten Namen, Personalnummern, Zählerstände oder internen Berichte eingeben oder importieren. Eingaben werden lokal auf diesem Gerät gespeichert.</p><nav class="tabs" id="nav"></nav><div id="view"></div></main><div id="modal"></div><div id="splash" class="splash"><div style="padding:24px;font-weight:bold">Sportpark Manager – DEMO mit Beispieldaten</div><button onclick="document.getElementById('splash').remove()">App öffnen</button></div><script>
+</style></head><body><header><h1>Sportpark Manager <small style="display:inline-block;font-size:11px;font-weight:normal;vertical-align:middle;margin-left:7px;padding:3px 6px;border:1px solid rgba(255,255,255,.55);border-radius:5px">25.2 Beta · DEMO</small></h1><button id="bell" title="Fällige Wartungen">🔔 <span id="dueCount">0</span></button></header><main><p role="note" style="background:#fff4d6;border:1px solid #d9b85a;border-radius:8px;padding:10px 12px;font-size:13px;margin:0 0 12px"><strong>DEMO – nur erfundene Testdaten.</strong> Bitte keine echten Namen, Personalnummern, Zählerstände oder internen Berichte eingeben oder importieren. Eingaben werden lokal auf diesem Gerät gespeichert.</p><nav class="tabs" id="nav"></nav><div id="view"></div></main><div id="modal"></div><div id="splash" class="splash"><div style="padding:24px;font-weight:bold">Sportpark Manager – DEMO mit Beispieldaten</div><button onclick="document.getElementById('splash').remove()">App öffnen</button></div><script>
 // Ausschließlich erfundene Beispieldaten. Keine realen Standorte, Zähler oder Mitarbeiter.
 const STAMMDATEN = {
   auftraege: [
@@ -142,7 +142,7 @@ function renderArchive(){
  return `<div class="meter"><div><strong>${shared?'✅':'📄'} KW ${String(i.week).padStart(2,'0')} / ${i.year}</strong><small>${shared?'Teilen gestartet':'Nicht geteilt oder seitdem geändert'}</small></div><button onclick="openArchivedWeek('${key}')">Öffnen</button></div>`}).join('')+'</section>';
 }
 function openArchivedWeek(key){state.week=key;side=0;persist();go('berichte')}
-async function shareWeek(){
+async async function shareWeek(){
  const key=state.week,info=weekInfo(dateFromWeek()),filename='Tagesbericht_KW'+String(info.week).padStart(2,'0')+'_'+info.year+'.xlsx';
  let blob;try{blob=buildWeekXlsxBlob()}catch(err){alert('Excel-Erstellung fehlgeschlagen: '+err.message);return}
  const file=new File([blob],filename,{type:'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'});
@@ -157,11 +157,10 @@ async function shareWeek(){
      if(previousMarker===undefined)delete state.sharedWeeks[key];
      else state.sharedWeeks[key]=previousMarker;
      persist();render();
-     if(err.name!=='AbortError')alert('Teilen nicht möglich: '+err.message);
+     if(err.name!=='AbortError')showShareFallback(filename,blob,err);
    }
  }else{
-   alert('Auf diesem Gerät ist direktes Teilen von Excel-Dateien nicht verfügbar. Die Datei wird heruntergeladen; es wird kein grüner Haken gesetzt.');
-   download(filename,blob);
+   showShareFallback(filename,blob);
  }
 }
 
@@ -252,16 +251,20 @@ function buildWeekXlsxBlob(){
 function exportWeekXlsx(){try{const i=weekInfo(dateFromWeek());download('Tagesbericht_KW'+String(i.week).padStart(2,'0')+'_'+i.year+'.xlsx',buildWeekXlsxBlob())}catch(err){console.error(err);alert('Excel-Export fehlgeschlagen: '+err.message)}}
 function buildMeterXlsxBlob(month=state.month){let data=state.meters[month]||{};let rows=[['Verbrauchswerte',month],['Verbrauchsstelle','Adresse','Sparte','Zählernummer','Zählerstand'],...ZAEHLER.map(a=>[...a,data[a[3]]||''])];return makeXlsx([{name:'Verbrauchswerte',rows,widths:[37,28,16,24,20]}])}
 function exportMeterXlsx(){try{const month=state.month;download('Verbrauch_'+month+'.xlsx',buildMeterXlsxBlob(month));state.completedMeters[month]=true;persist()}catch(err){console.error(err);alert('Excel-Export fehlgeschlagen: '+err.message)}}
+function showShareFallback(filename,blob,err){
+ const reason=err?'Der Browser hat die direkte Dateifreigabe verweigert ('+err.message+').':'Der Browser unterstützt die direkte Excel-Dateifreigabe nicht.';
+ alert(reason+'\n\nDie Excel-Datei wird stattdessen heruntergeladen. Öffne sie danach in Excel und verwende dort das Teilen-Symbol für Teams oder E-Mail.\n\nEs wird kein Teilen-Erfolgsstatus gesetzt.');
+ download(filename,blob);
+}
 async function shareMeterXlsx(){
  const month=state.month,filename='Verbrauch_'+month+'.xlsx';
  let blob;try{blob=buildMeterXlsxBlob(month)}catch(err){alert('Excel-Erstellung fehlgeschlagen: '+err.message);return}
  const file=new File([blob],filename,{type:'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'});
  if(navigator.share&&navigator.canShare&&navigator.canShare({files:[file]})){
   try{await navigator.share({files:[file],title:'Verbrauchswerte '+month});state.completedMeters[month]=true;persist();render()}
-  catch(err){if(err.name!=='AbortError')alert('Direktes Teilen wurde vom Browser verweigert ('+err.message+'). Öffne den Demo-Link direkt in Chrome und versuche es erneut. Alternativ kannst du die Excel-Datei herunterladen und aus Excel heraus teilen.');}
+  catch(err){if(err.name!=='AbortError')showShareFallback(filename,blob,err);}
  }else{
-  alert('Direktes Teilen von Excel-Dateien wird hier nicht unterstützt. Bitte die heruntergeladene Datei in Teams oder einer E-Mail-App als Anhang auswählen.');
-  download(filename,blob);
+  showShareFallback(filename,blob);
  }
 }
 render();restoreReportPosition();
