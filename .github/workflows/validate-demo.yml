@@ -17,7 +17,7 @@ jobs:
           const fs = require('node:fs');
           const vm = require('node:vm');
           const html = fs.readFileSync('index.html', 'utf8');
-          const scripts = [...html.matchAll(/<script(?:\s[^>]*)?>([\s\\S]*?)<\/script>/g)];
+          const scripts = [...html.matchAll(/<script(?:\s[^>]*)?>([\s\S]*?)<\/script>/g)];
           if (scripts.length !== 3) throw new Error('Expected three embedded scripts, found '+scripts.length);
           for (const [i, match] of scripts.entries()) {
             new vm.Script(match[1], {filename: 'demo-script-'+i+'.js'});
